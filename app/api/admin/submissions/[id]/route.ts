@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { createClient as createServerSupabase } from "@/lib/supabase/server";
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } },
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await context.params;
   const supabase = await createServerSupabase();
   const { data: auth } = await supabase.auth.getUser();
   const userId = auth.user?.id;
@@ -29,7 +30,7 @@ export async function PATCH(
   const { error } = await supabase
     .from("submissions")
     .update(updates)
-    .eq("id", params.id);
+    .eq("id", id);
   if (error)
     return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
