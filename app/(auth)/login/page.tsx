@@ -27,9 +27,11 @@ export default function LoginPage() {
     <div className="container">
       <div className="hero-section">
         <h1 className="hero-title">Welcome Back</h1>
-        <p className="hero-subtitle">Enter your email to receive a secure login link</p>
+        <p className="hero-subtitle">
+          Enter your email to receive a secure login link
+        </p>
       </div>
-      
+
       <div className="card" style={{ maxWidth: "500px", margin: "0 auto" }}>
         <form className="grid gap-4" onSubmit={onSubmit}>
           <div className="field">
@@ -48,23 +50,24 @@ export default function LoginPage() {
           </button>
         </form>
         {message && (
-          <div className={`mt-4 p-3 rounded-lg text-sm ${
-            message.includes("sent") 
-              ? "bg-green-900/20 text-green-400 border border-green-400/20" 
-              : "bg-red-900/20 text-red-400 border border-red-400/20"
-          }`}>
+          <div
+            className={`mt-4 p-3 rounded-lg text-sm ${
+              message.includes("sent")
+                ? "bg-green-900/20 text-green-400 border border-green-400/20"
+                : "bg-red-900/20 text-red-400 border border-red-400/20"
+            }`}
+          >
             {message}
           </div>
         )}
-        
+
         <div className="mt-6 pt-4 border-t border-border text-center">
           <p className="text-sm text-muted">
-            Don't have an account? The magic link will create one for you automatically.
+            Don't have an account? The magic link will create one for you
+            automatically.
           </p>
         </div>
       </div>
     </div>
   );
 }
-
-

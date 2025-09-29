@@ -15,9 +15,11 @@ export default function PdfPreview({ file }: { file: File | null }) {
   if (!file) return null;
   return (
     <div className="card" style={{ height: 400 }}>
-      <iframe ref={iframeRef} title="PDF Preview" style={{ width: "100%", height: "100%", border: 0 }} />
+      <iframe
+        ref={iframeRef}
+        title="PDF Preview"
+        style={{ width: "100%", height: "100%", border: 0 }}
+      />
     </div>
   );
 }
-
-

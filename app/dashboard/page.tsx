@@ -1,6 +1,5 @@
-import { createClient as createServerSupabase } from "@/lib/supabase/server";
 import Link from "next/link";
-import { revalidatePath } from "next/cache";
+import { createClient as createServerSupabase } from "@/lib/supabase/server";
 import UploadWidget from "./upload-widget";
 
 async function getData() {
@@ -16,21 +15,25 @@ async function getData() {
 
 export default async function DashboardPage() {
   const { email, submissions } = await getData();
-  
+
   const stats = {
     total: submissions.length,
-    pending: submissions.filter(s => s.status === 'pending').length,
-    approved: submissions.filter(s => s.status === 'approved').length,
-    needsRevision: submissions.filter(s => s.status === 'needs_revision').length,
-    rejected: submissions.filter(s => s.status === 'rejected').length,
+    pending: submissions.filter((s) => s.status === "pending").length,
+    approved: submissions.filter((s) => s.status === "approved").length,
+    needsRevision: submissions.filter((s) => s.status === "needs_revision")
+      .length,
+    rejected: submissions.filter((s) => s.status === "rejected").length,
   };
-  
+
   return (
     <div className="container">
       <div className="dashboard-header">
         <div>
           <h1 className="dashboard-title">Dashboard</h1>
-          <p className="dashboard-subtitle">Welcome back{email ? `, ${email}` : ""}. Manage your resume submissions.</p>
+          <p className="dashboard-subtitle">
+            Welcome back{email ? `, ${email}` : ""}. Manage your resume
+            submissions.
+          </p>
         </div>
       </div>
 
@@ -65,7 +68,9 @@ export default async function DashboardPage() {
           {submissions.length === 0 ? (
             <div className="card text-center py-8">
               <p className="text-muted text-lg mb-4">No submissions yet.</p>
-              <p className="text-muted">Upload your first resume to get started with the review process.</p>
+              <p className="text-muted">
+                Upload your first resume to get started with the review process.
+              </p>
             </div>
           ) : (
             submissions.map((s) => (
@@ -80,12 +85,14 @@ export default async function DashboardPage() {
                   </div>
                   <div className="submission-status">
                     <span className={`status-badge status-${s.status}`}>
-                      {s.status.replace('_', ' ')}
+                      {s.status.replace("_", " ")}
                     </span>
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  <Link className="btn" href={`/api/submissions?id=${s.id}`}>View Details</Link>
+                  <Link className="btn" href={`/api/submissions?id=${s.id}`}>
+                    View Details
+                  </Link>
                 </div>
               </div>
             ))
@@ -97,5 +104,3 @@ export default async function DashboardPage() {
 }
 
 // moved to client component for preview + toasts
-
-

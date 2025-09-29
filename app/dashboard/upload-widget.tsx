@@ -33,7 +33,9 @@ export default function UploadWidget() {
     const res = await fetch("/api/submissions", { method: "POST", body });
     setBusy(false);
     if (!res.ok) {
-      const { error } = await res.json().catch(() => ({ error: "Upload failed" }));
+      const { error } = await res
+        .json()
+        .catch(() => ({ error: "Upload failed" }));
       show(error ?? "Upload failed", "error");
       return;
     }
@@ -46,15 +48,20 @@ export default function UploadWidget() {
       <div className="card">
         <div className="field">
           <label>Upload PDF</label>
-          <input className="input" type="file" accept="application/pdf" onChange={onFileChange} />
+          <input
+            className="input"
+            type="file"
+            accept="application/pdf"
+            onChange={onFileChange}
+          />
         </div>
       </div>
       <PdfPreview file={file} />
       <div>
-        <button className="btn" disabled={busy} type="submit">{busy ? "Uploading..." : "Submit"}</button>
+        <button className="btn" disabled={busy} type="submit">
+          {busy ? "Uploading..." : "Submit"}
+        </button>
       </div>
     </form>
   );
 }
-
-

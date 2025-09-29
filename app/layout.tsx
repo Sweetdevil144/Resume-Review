@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { logoutAction } from "@/app/actions/auth";
-import { createClient as createServerSupabase } from "@/lib/supabase/server";
 import ToastProvider from "@/components/ToastProvider";
+import { createClient as createServerSupabase } from "@/lib/supabase/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         {/* Header */}
         <Header />
-        <ToastProvider>
-          {children}
-        </ToastProvider>
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );
@@ -43,7 +43,7 @@ async function Header() {
   const supabase = await createServerSupabase();
   const { data } = await supabase.auth.getUser();
   const isAuthed = Boolean(data.user);
-  
+
   let userRole = null;
   if (isAuthed) {
     const { data: profile } = await supabase
@@ -53,20 +53,39 @@ async function Header() {
       .maybeSingle();
     userRole = profile?.role;
   }
-  
+
   return (
     <header className="container" style={{ paddingBottom: "2" }}>
-      <nav className="flex items-center justify-between" style={{ gap: "0.5rem" }}>
+      <nav
+        className="flex items-center justify-between"
+        style={{ gap: "0.5rem" }}
+      >
         <div className="flex items-center" style={{ gap: "0.5rem" }}>
-          <Link className="btn" href="/">Home</Link>
-          {isAuthed && userRole === "user" && <Link className="btn" href="/dashboard">Dashboard</Link>}
-          {isAuthed && userRole === "admin" && <Link className="btn" href="/admin">Admin Panel</Link>}
+          <Link className="btn" href="/">
+            Home
+          </Link>
+          {isAuthed && userRole === "user" && (
+            <Link className="btn" href="/dashboard">
+              Dashboard
+            </Link>
+          )}
+          {isAuthed && userRole === "admin" && (
+            <Link className="btn" href="/admin">
+              Admin Panel
+            </Link>
+          )}
         </div>
         <div>
           {isAuthed ? (
-            <form action={logoutAction}><button className="btn" type="submit">Logout</button></form>
+            <form action={logoutAction}>
+              <button className="btn" type="submit">
+                Logout
+              </button>
+            </form>
           ) : (
-            <Link className="btn" href="/login">Login</Link>
+            <Link className="btn" href="/login">
+              Login
+            </Link>
           )}
         </div>
       </nav>

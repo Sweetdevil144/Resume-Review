@@ -6,8 +6,6 @@ export function getSupabaseServiceClient() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
       auth: { persistSession: false },
-    }
+    },
   );
 }
-
-

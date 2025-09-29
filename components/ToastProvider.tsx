@@ -1,7 +1,17 @@
 "use client";
-import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-type Toast = { id: string; message: string; type?: "success" | "error" | "info" };
+type Toast = {
+  id: string;
+  message: string;
+  type?: "success" | "error" | "info";
+};
 
 type ToastContextType = {
   show: (message: string, type?: Toast["type"]) => void;
@@ -15,7 +25,11 @@ export function useToast() {
   return ctx;
 }
 
-export default function ToastProvider({ children }: { children: React.ReactNode }) {
+export default function ToastProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const show = useCallback((message: string, type?: Toast["type"]) => {
@@ -31,10 +45,26 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div style={{ position: "fixed", right: 16, bottom: 16, display: "grid", gap: 8, zIndex: 50 }}>
+      <div
+        style={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          display: "grid",
+          gap: 8,
+          zIndex: 50,
+        }}
+      >
         {toasts.map((t) => (
-          <div key={t.id} className="card" style={{ minWidth: 260, borderColor: colorFor(t.type) }}>
-            <div className="text-sm" style={{ color: colorFor(t.type), fontWeight: 600 }}>
+          <div
+            key={t.id}
+            className="card"
+            style={{ minWidth: 260, borderColor: colorFor(t.type) }}
+          >
+            <div
+              className="text-sm"
+              style={{ color: colorFor(t.type), fontWeight: 600 }}
+            >
               {labelFor(t.type)}
             </div>
             <div className="text-sm">{t.message}</div>
@@ -56,5 +86,3 @@ function labelFor(type?: Toast["type"]) {
   if (type === "error") return "Error";
   return "Info";
 }
-
-

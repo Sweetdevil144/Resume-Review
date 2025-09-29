@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
-import { createClient as createServerSupabase } from "@/lib/supabase/server";
-import { getSupabaseServiceClient } from "@/lib/supabase/admin";
 import { ensureProfile } from "@/lib/ensureProfile";
-
+import { getSupabaseServiceClient } from "@/lib/supabase/admin";
+import { createClient as createServerSupabase } from "@/lib/supabase/server";
 export async function GET() {
   const supabase = await createServerSupabase();
   const { data: auth } = await supabase.auth.getUser();
   const userId = auth.user?.id;
-  if (!userId) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!userId)
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   await ensureProfile(supabase);
   const { data, error } = await supabase
     .from("submissions")
     .select("id, original_name, status, score, created_at")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  if (error)
+    return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ submissions: data });
 }
 
@@ -22,13 +23,17 @@ export async function POST(request: Request) {
   const supabase = await createServerSupabase();
   const { data: auth } = await supabase.auth.getUser();
   const userId = auth.user?.id;
-  if (!userId) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!userId)
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   const form = await request.formData();
   const file = form.get("file") as File | null;
-  if (!file) return NextResponse.json({ error: "file_required" }, { status: 400 });
-  if (file.type !== "application/pdf") return NextResponse.json({ error: "invalid_type" }, { status: 400 });
-  if (file.size > 10 * 1024 * 1024) return NextResponse.json({ error: "file_too_large" }, { status: 400 });
+  if (!file)
+    return NextResponse.json({ error: "file_required" }, { status: 400 });
+  if (file.type !== "application/pdf")
+    return NextResponse.json({ error: "invalid_type" }, { status: 400 });
+  if (file.size > 10 * 1024 * 1024)
+    return NextResponse.json({ error: "file_too_large" }, { status: 400 });
 
   const service = getSupabaseServiceClient();
   const ext = ".pdf";
@@ -40,7 +45,8 @@ export async function POST(request: Request) {
       contentType: file.type,
       upsert: false,
     });
-  if (uploadErr) return NextResponse.json({ error: uploadErr.message }, { status: 400 });
+  if (uploadErr)
+    return NextResponse.json({ error: uploadErr.message }, { status: 400 });
 
   const { data: signed } = await service.storage
     .from("resumes")
@@ -58,8 +64,7 @@ export async function POST(request: Request) {
     })
     .select("id")
     .single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  if (error)
+    return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ id: data.id });
 }
-
-
