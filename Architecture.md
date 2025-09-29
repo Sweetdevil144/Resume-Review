@@ -1,4 +1,4 @@
-# Architecture
+# Fundamental Architecture
 
 - User uploads a resume and sees status.
 - Admin reviews, sets status and optional score/notes.
