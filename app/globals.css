@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #111111;
+  --card-hover: #1a1a1a;
+  --border: #333333;
+  --border-light: #444444;
+  --muted: #888888;
+  --muted-light: #aaaaaa;
+  --accent: #ffffff;
+  --accent-dark: #e5e5e5;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --pending: #6b7280;
 }
 
 @theme inline {
@@ -12,15 +24,383 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: linear-gradient(135deg, #000000 0%, #111111 50%, #000000 100%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
 }
 
-body {
-  background: var(--background);
+/* Container and Layout */
+.container { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 1.5rem; 
+}
+
+/* Header */
+header {
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+header .container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Cards */
+.card { 
+  border: 1px solid var(--border); 
+  border-radius: 0.75rem; 
+  padding: 1.5rem; 
+  background: var(--card); 
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+}
+
+.card:hover {
+  background: var(--card-hover);
+  border-color: var(--border-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Buttons */
+.btn { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 0.75rem 1.5rem; 
+  border-radius: 0.5rem; 
+  background: var(--accent); 
+  color: var(--background); 
+  font-weight: 600; 
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.btn:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--background);
+}
+
+/* Form Elements */
+.field { 
+  display: grid; 
+  gap: 0.5rem; 
+}
+
+.input { 
+  border: 1px solid var(--border); 
+  background: var(--card); 
+  color: var(--foreground); 
+  border-radius: 0.5rem; 
+  padding: 0.75rem 1rem; 
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+/* Text Styles */
+.text-sm { 
+  color: var(--muted); 
+  font-size: 0.875rem;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: rgba(107, 114, 128, 0.2);
+  color: var(--pending);
+  border: 1px solid var(--pending);
+}
+
+.status-approved {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.status-needs_revision {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.status-rejected {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+  border: 1px solid var(--error);
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 4rem 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+  border-radius: 1rem;
+  margin-bottom: 4rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--muted-light);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Features Section */
+.features-section {
+  margin-top: 4rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 3rem;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  padding: 2rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.05);
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.feature-card p {
+  color: var(--muted-light);
+  line-height: 1.6;
+}
+
+/* Dashboard Enhancements */
+.dashboard-header {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.dashboard-subtitle {
+  color: var(--muted-light);
+  margin-top: 0.5rem;
+}
+
+/* Submission Cards */
+.submission-card {
+  transition: all 0.2s ease;
+}
+
+.submission-card:hover {
+  border-color: var(--accent);
+}
+
+.submission-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.submission-info h4 {
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.25rem;
+}
+
+.submission-info .meta-text {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.submission-status {
+  text-align: right;
+}
+
+/* Admin Panel Enhancements */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Form Enhancements */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .submission-meta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .submission-status {
+    text-align: left;
+  }
 }
