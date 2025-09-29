@@ -12,7 +12,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
-    const envBase = process.env.NEXT_PUBLIC_BASE_URL ?? "";
+    const envBase = process.env.NEXT_PUBLIC_BASE_URL ?? "https://resume-review-gilt.vercel.app/";
     const runtimeBase = typeof window !== "undefined" ? window.location.origin : "";
     const base = (envBase || runtimeBase).replace(/\/$/, "");
     const { error } = await supabase.auth.signInWithOtp({
